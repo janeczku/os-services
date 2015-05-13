@@ -1,0 +1,15 @@
+console:
+  image: dockerui/dockerui
+  privileged: false
+  restart: always
+  read_only: false
+  net: host
+  links:
+  - network
+  labels:
+  - io.rancher.os.scope=system
+  - io.rancher.os.detach=true
+  volumes_from:
+  - system-volumes
+  ports:
+  - "9000:9000"
