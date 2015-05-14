@@ -1,6 +1,6 @@
-console:
+dockerui:
   image: dockerui/dockerui
-  privileged: false
+  privileged: true
   restart: always
   read_only: false
   net: host
@@ -11,5 +11,3 @@ console:
   - io.rancher.os.detach=true
   volumes_from:
   - system-volumes
-  ports:
-  - "9000:9000"
