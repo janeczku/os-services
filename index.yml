@@ -1,3 +1,4 @@
 services:
 - debian-console
 - ubuntu-console
+- datadog-agent
