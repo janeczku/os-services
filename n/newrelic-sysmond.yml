@@ -4,6 +4,7 @@ newrelic-sysmond:
   environment:
   - NRSYSMOND_license_key
   - NRSYSMOND_hostname
+  - NRSYSMOND_loglevel
   links:
   - network
   - cloud-init
@@ -11,12 +12,12 @@ newrelic-sysmond:
   - io.rancher.os.scope=system
   - io.rancher.os.detach=true
   volumes:
-  - /host/dev:/dev
+  - /dev:/dev
   - /sys:/sys
-  - /var/run/docker.sock:/var/run/docker.sock
-  - /var/log:/var/log:rw
-  #volumes_from:
-  #- system-volumes
+  #- /var/run/docker.sock:/var/run/docker.sock
+  #- /var/log:/var/log:rw
+  volumes_from:
+  - system-volumes
   restart: always
   pid: host
   net: host
