@@ -11,14 +11,12 @@ newrelic-sysmond:
   - io.rancher.os.scope=system
   - io.rancher.os.detach=true
   volumes:
-#  - /proc:/proc
-  - /dev:/dev
+  - /host/dev:/dev
   - /sys:/sys
   volumes_from:
   - system-volumes
   restart: always
   pid: host
   net: host
-#  uts: host
-#  ipc: host
+  ipc: host
 
