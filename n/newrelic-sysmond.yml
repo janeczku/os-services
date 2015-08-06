@@ -13,10 +13,12 @@ newrelic-sysmond:
   volumes:
   - /host/dev:/dev
   - /sys:/sys
-  volumes_from:
-  - system-volumes
+  - /var/run/docker.sock:/var/run/docker.sock
+  - /var/log:/var/log:rw
+  #volumes_from:
+  #- system-volumes
   restart: always
   pid: host
   net: host
-  ipc: host
+  #ipc: host
 
