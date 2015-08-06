@@ -12,7 +12,7 @@ newrelic-sysmond:
   - io.rancher.os.scope=system
   - io.rancher.os.detach=true
   volumes:
-  - /dev:/dev
+  - /host/dev:/dev
   - /sys:/sys
   #- /var/run/docker.sock:/var/run/docker.sock
   #- /var/log:/var/log:rw
@@ -21,5 +21,5 @@ newrelic-sysmond:
   restart: always
   pid: host
   net: host
-  #ipc: host
+  ipc: host
 
