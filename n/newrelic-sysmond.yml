@@ -6,11 +6,9 @@ newrelic-sysmond:
     io.rancher.os.after: cloud-init
   environment:
   - NRSYSMOND_license_key
-  volumes_from:
-  - system-volumes
   volumes:
-  - /dev:/dev
-  - /sys:/sys
+  - /dev:/dev:ro
+  - /sys:/sys:ro
   - /var/run/docker.sock:/var/run/docker.sock
   restart: always
   privileged: true
