@@ -1,22 +1,18 @@
 newrelic-sysmond:
   image: newrelic/nrsysmond:latest
-  privileged: true
-  environment:
-  - NRSYSMOND_license_key
-  - NRSYSMOND_hostname
-  - NRSYSMOND_loglevel
-  links:
-  - network
-  - cloud-init
   labels:
-  - io.rancher.os.scope=system
-  - io.rancher.os.detach=true
+    io.rancher.os.scope: system
+    io.rancher.os.detach: true
+    io.rancher.os.after: cloud-init
+  environment:
+  - NRSYSMOND_*
+  volumes_from:
+  - system-volumes
   volumes:
   - /dev:/dev
   - /sys:/sys
-  volumes_from:
-  - system-volumes
   restart: always
+  privileged: true
   pid: host
   net: host
   ipc: host
