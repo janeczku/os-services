@@ -1,24 +1,18 @@
 datadog-agent:
   image: datadog/docker-dd-agent
-  privileged: true
+  labels:
+    io.rancher.os.scope: system
+    io.rancher.os.detach: true
+    io.rancher.os.after: cloud-init
   environment:
   - API_KEY
   - TAGS
-  links:
-  - network
-  - cloud-init
-  labels:
-  - io.rancher.os.scope=system
-  - io.rancher.os.detach=true
   volumes:
-  - /proc:/host/proc
-  - /dev:/dev
-  - /sys:/host/sys
-  volumes_from:
-  - system-volumes
+  - /proc/mounts:/host/proc/mounts:ro
+  - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+  - /var/run/docker.sock:/var/run/docker.sock
   restart: always
+  privileged: true
   pid: host
   net: host
-#  uts: host
-#  ipc: host
-
+  uts: host
