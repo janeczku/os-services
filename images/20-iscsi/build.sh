@@ -8,6 +8,11 @@ echo "open-iscsi for ${KERNEL_VERSION}"
 DIR=/lib/modules/${KERNEL_VERSION}/build
 STAMP=/lib/modules/${KERNEL_VERSION}/.open-iscsi-done
 
+function exec_iscsid {
+    echo Starting iscsid
+    exec /usr/sbin/iscsid -f
+}
+
 if [ -e $STAMP ]; then
     modprobe iscsi_tcp
     system-docker run --rm iscsi-tools cat /setup_wonka.sh > /setup_wonka.sh
@@ -18,14 +23,13 @@ if [ -e $STAMP ]; then
     /setup_wonka.sh iscsi-tools
 
     echo open-iscsi for ${KERNEL_VERSION} already installed. Delete $STAMP to reinstall
-    exit 0
+    exec_iscsid
 fi
 
 #TODO: test that the headers are there
 #TODO: or, if we continue to be able to use the docker daemon, can we use ros to enable and up it?
 ros service enable kernel-headers-system-docker
 ros service up kernel-headers-system-docker
-
 
 VERSION="0.98"
 curl -sL https://github.com/open-iscsi/open-isns/archive/v${VERSION}.tar.gz > open-isns${VERSION}.tar.gz
@@ -65,7 +69,6 @@ cp /dist/entry.sh /dist/arch/
 # we do seem to have /opt mapped
 echo "#!/bin/sh" > /dist/arch/setup_wonka.sh
 echo "echo installing wonka bin links in \${1}" >> /dist/arch/setup_wonka.sh
-chmod 755 /dist/arch/setup_wonka.sh
 #for i in $(ls arch/usr/local/bin); do
 #   echo "system-docker cp wonka.sh \${1}:/usr/bin/$i" >> /dist/arch/setup_wonka.sh
 #done
@@ -81,7 +84,10 @@ system-docker build --network=host -t iscsi-tools arch/
 modprobe iscsi_tcp
 
 # setup wonka in the console container
-/dist/arch/setup_wonka.sh console
+system-docker run --rm iscsi-tools cat /setup_wonka.sh > /setup_wonka.sh
+chmod 755 /setup_wonka.sh
+/setup_wonka.sh console
 
 touch $STAMP
 echo open-iscsi for ${KERNEL_VERSION} installed. Delete $STAMP to reinstall
+exec_iscsid

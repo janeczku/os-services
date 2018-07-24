@@ -8,6 +8,7 @@ exec system-docker run --rm --privileged \
 		-v /media:/media:shared \
 		-v /dev:/host/dev \
 		-v /run:/run \
-		-v /etc/iscsi/nodes/:/etc/iscsi/nodes/ \
-		-v /etc/iscsi/send_targets/:/etc/iscsi/send_targets/ \
+		-v /etc/iscsi/:/etc/iscsi/ \
+		# -v /etc/iscsi/nodes/:/etc/iscsi/nodes/ \
+		# -v /etc/iscsi/send_targets/:/etc/iscsi/send_targets/ \
 		iscsi-tools $(basename $0) $@
